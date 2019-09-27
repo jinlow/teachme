@@ -1,0 +1,7 @@
+scratch.py
+/__pycache__/
+__pycache__/
+/env/
+/.ipynb_checkpoints/
+/.mypy_cache/
+/notebooks/
