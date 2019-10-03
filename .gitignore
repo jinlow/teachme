@@ -4,4 +4,5 @@ __pycache__/
 /env/
 /.ipynb_checkpoints/
 /.mypy_cache/
+/.vscode/
 /notebooks/

@@ -24,7 +24,4 @@ class Chat:
         """Create Response to User Input
         """
         userinput = UserInput(user_chat)
-        if userinput.user_question():
-            print("Is that a question?")
-        else:
-            print(f"Sounds like, {user_chat}")
+        userinput.proc_userinput()

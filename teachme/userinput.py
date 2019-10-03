@@ -1,6 +1,6 @@
 import spacy
 from spacy.symbols import aux
-from teachme.constants import WH_WORDS
+from teachme.constants import WH_WORDS, BE_WORDS
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -11,7 +11,7 @@ class UserInput:
     """
 
     def __init__(self, user_input: str):
-        self.proc_input = nlp(user_input)
+        self.nlp_input = nlp(user_input)
 
     def user_question(self) -> bool:
         """Is Input a quesion?
@@ -21,12 +21,12 @@ class UserInput:
         wh_i = -1
         q_i = -1
         # Loop through tokens
-        for tok in self.proc_input:
+        for tok in self.nlp_input:
             if tok.head == tok:
                 root_i = tok.i
             if tok.lower_ in WH_WORDS:
                 wh_i = tok.i
-            if (tok.lower_ in ['is', 'was', 'do']) and tok.i == 0:
+            if (tok.lower_ in BE_WORDS) and tok.i == 0:
                 q_i = tok.i
                 root_i -= 1
             elif tok.dep == aux:
@@ -37,7 +37,7 @@ class UserInput:
         """Return tense of Input
         """
         dtl = []
-        for tok in self.proc_input:
+        for tok in self.nlp_input:
             if tok.tag_ in ['VBD', 'VBN']:
                 dtl.append('PAST')
             elif tok.tag_ in ['VBG', 'VBP', 'VBZ']:
@@ -51,3 +51,19 @@ class UserInput:
         else:
             doc_tense = 'UNKNOWN'
         return doc_tense
+
+    def question_response(self) -> None:
+        """Resonpd to Questions
+        Formulate a response question
+        """
+        pass
+
+    def proc_userinput(self) -> None:
+        """Process User Input
+        Using the methods in the UserInput class process the incoming
+        chats.
+        """
+        if self.user_question():
+            print("Is this a question")
+        else:
+            print(f"Sounds like, {self.nlp_input}")
