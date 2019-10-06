@@ -1,9 +1,11 @@
+"""Process User Input
+"""
+import random
 import spacy
-from spacy.symbols import aux
-from teachme.constants import WH_WORDS, BE_WORDS
+from spacy.symbols import AUX
+from teachme import constants
 
 nlp = spacy.load('en_core_web_sm')
-
 
 class UserInput:
     """Process User Input
@@ -15,7 +17,7 @@ class UserInput:
 
     def user_question(self) -> bool:
         """Is Input a quesion?
-        A simply grammer to determine if the input is a question
+        A simply grammer to determine if the input is a question.
         """
         # Initialize token indexes
         wh_i = -1
@@ -24,13 +26,13 @@ class UserInput:
         for tok in self.nlp_input:
             if tok.head == tok:
                 root_i = tok.i
-            if tok.lower_ in WH_WORDS:
+            if tok.lower_ in constants.WH_WORDS:
                 wh_i = tok.i
-            if (tok.lower_ in BE_WORDS) and tok.i == 0:
+            if (tok.lower_ in constants.BE_WORDS) and tok.i == 0:
                 q_i = tok.i
                 root_i -= 1
-            elif tok.dep == aux:
-                q_i = aux
+            elif tok.dep == AUX:
+                q_i = AUX
         return (q_i > root_i) | (wh_i == 0)
 
     def get_tense(self) -> bool:
@@ -56,14 +58,23 @@ class UserInput:
         """Resonpd to Questions
         Formulate a response question
         """
-        pass
+
+    def greeting_check(self) -> bool:
+        """Check for Greeting
+        Test if the user input is a greeting and create response.
+        """
+        greeting = [tok.lower_ in constants.GREETING_WORDS for tok in self.nlp_input]
+        return any(greeting)
 
     def proc_userinput(self) -> None:
         """Process User Input
         Using the methods in the UserInput class process the incoming
         chats.
         """
+        self.greeting_check()
         if self.user_question():
-            print("Is this a question")
+            print("Is this a question?")
+        elif self.greeting_check():
+            print(random.choice(constants.GREETING_RESPONSE))
         else:
             print(f"Sounds like, {self.nlp_input}")

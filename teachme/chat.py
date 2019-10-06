@@ -1,7 +1,12 @@
+"""Chat UI
+"""
 from teachme.userinput import UserInput
 
 
 class Chat:
+    """Create Chat
+    Chat and respond to teachme chatbot.
+    """
     def __init__(self, chatty: bool = True):
         if chatty:
             print("Hello! \n"
