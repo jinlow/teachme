@@ -5,19 +5,19 @@ import spacy
 from spacy.symbols import AUX
 from teachme import constants
 
-nlp = spacy.load('en_core_web_sm')
-
 class UserInput:
     """Process User Input
-    Methods for processing and extracting meaning from user input
+    Methods for processing and extracting meaning from user input.
     """
 
+    nlp = spacy.load('en_core_web_md')
+
     def __init__(self, user_input: str):
-        self.nlp_input = nlp(user_input)
+        self.nlp_input = self.nlp(user_input)
 
     def user_question(self) -> bool:
         """Is Input a quesion?
-        A simply grammer to determine if the input is a question.
+        A simple grammer to determine if the input is a question.
         """
         # Initialize token indexes
         wh_i = -1
@@ -33,6 +33,8 @@ class UserInput:
                 root_i -= 1
             elif tok.dep == AUX:
                 q_i = AUX
+            elif self.nlp_input[-1].lemma_ == '?':
+                return True
         return (q_i > root_i) | (wh_i == 0)
 
     def get_tense(self) -> bool:
@@ -58,6 +60,7 @@ class UserInput:
         """Resonpd to Questions
         Formulate a response question
         """
+        print("Is that a question?")
 
     def greeting_check(self) -> bool:
         """Check for Greeting
@@ -73,7 +76,7 @@ class UserInput:
         """
         self.greeting_check()
         if self.user_question():
-            print("Is this a question?")
+            self.question_response()
         elif self.greeting_check():
             print(random.choice(constants.GREETING_RESPONSE))
         else:
