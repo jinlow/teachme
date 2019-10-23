@@ -1,6 +1,11 @@
 """Project Constants
-All of the constansts used for the project.
+All of the constansts used for the project including the 
+spacy model.
 """
+
+import spacy
+
+NLP = spacy.load('en_core_web_md')
 
 WH_WORDS = ['what', 'where', 'when', 'which',
             'who', 'whom', 'whose', 'why', 'how']

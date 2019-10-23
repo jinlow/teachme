@@ -1,7 +1,6 @@
 """Process User Input
 """
 import random
-import spacy
 from spacy.symbols import AUX
 from teachme import constants
 
@@ -10,10 +9,8 @@ class UserInput:
     Methods for processing and extracting meaning from user input.
     """
 
-    nlp = spacy.load('en_core_web_md')
-
     def __init__(self, user_input: str):
-        self.nlp_input = self.nlp(user_input)
+        self.nlp_input = constants.NLP(user_input)
 
     def user_question(self) -> bool:
         """Is Input a quesion?
